@@ -1,7 +1,7 @@
 # HW 02
 
 - Establish connection to your Database.
-- Create models: `Car`, `Driver` and `Manufacturer`. Use UML diagram (models) for this, see below.
+- Create `Manufacturer` model.
 - Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
 - You're already given an injector and `@Dao` and `@Inject` annotations. Do not forget to use it for Dao implementations.
 - Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in DAO.
@@ -31,42 +31,11 @@ public class Manufacturer {
 }
 ```
 
-- Driver
-
-```java
-import java.util.List;
-
-public class Driver {
-    private Long id;
-    private String name;
-    private String licenseNumber;
-    // keep in mind, one driver can drive several cars per day
-    // but we do not wan't to store a list of cars in a Driver class
-}
-```
-
-- Car
-
-```java
-import java.util.List;
-
-public class Car {
-    private Long id;
-    private String model;
-    private Manufacturer manufacturer;
-    private List<Driver> drivers;
-}
-```
-
 ### ManufacturerDao methods:
     - Manufacturer create(Manufacturer manufacturer);
     - Optional<Manufacturer> get(Long id);
     - List<Manufacturer> getAll();
     - Manufacturer update(Manufacturer manufacturer);
     - boolean delete(Long id);
-
-### UML diagram
-
-![img](https://mate-academy.github.io/jv-program-fulltime/02_jdbc/content/taxi_models_diagram.jpg)
 
 __You can check yourself using this__ [checklist](https://mate-academy.github.io/jv-program-common-mistakes/java-JDBC/jdbc-intro/JDBC-intro_checklist.html)
