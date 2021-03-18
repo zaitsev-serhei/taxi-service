@@ -3,8 +3,7 @@
 - Establish connection to your Database.
 - Create models: `Car`, `Driver` and `Manufacturer`. Use UML diagram (models) for this, see below.
 - Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
-- Add new [injector](https://mate-academy.github.io/jv-program-fulltime/02_jdbc/content/new-injector.html) to your project.
-- Do not forget to use `@Dao` for Dao implementations.
+- You're already given an injector and `@Dao` and `@Inject` annotations. Do not forget to use it for Dao implementations.
 - Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in DAO.
   For example: ```public Optional<Manufacturer> get(Long id);```
 - In the `main` method call CRUD methods. It may look like:
