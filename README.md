@@ -2,22 +2,21 @@
 
 - Establish connection to your Database.
 - Create models: `Car`, `Driver` and `Manufacturer`. Use UML diagram (models) for this, see below.
-- Create DAO and service layer for `Manufacturer` model. Below you can see the list of required methods.
-- Add CRUD operations into `ManufacturerDao`.
-- Add new [injector](../content/new-injector.md) to your project.
-- Do not forget to use `@Dao` for Dao implementations. Same for `@Sevice`.
+- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
+- Add new [injector](https://mate-academy.github.io/jv-program-fulltime/02_jdbc/content/new-injector.html) to your project.
+- Do not forget to use `@Dao` for Dao implementations.
 - Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in DAO.
   For example: ```public Optional<Manufacturer> get(Long id);```
-- In the `main` method create instance of manufacturer service and call CRUD methods. It may look like:
+- In the `main` method call CRUD methods. It may look like:
 ```java
 public class Main {
     private static final Injector injector = Injector.getInstance("YOUR_PACKAGE");
 
     public static void main(String[] args) {
-        ManufacturerService manufacturerService = (ManufacturerService) injector.getInstance(ManufacturerService.class);
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
         // initialize field values using setters or constructor
-        manufacturerService.save(manufacturer);
+        manufacturerDao.save(manufacturer);
         // same for all other crud methods and for all models
     }
 }
@@ -63,13 +62,6 @@ public class Car {
 ### ManufacturerDao methods:
     - Manufacturer create(Manufacturer manufacturer);
     - Optional<Manufacturer> get(Long id);
-    - List<Manufacturer> getAll();
-    - Manufacturer update(Manufacturer manufacturer);
-    - boolean delete(Long id);
-
-### ManufacturerService methods:
-    - Manufacturer create(Manufacturer manufacturer);
-    - Manufacturer get(Long id);
     - List<Manufacturer> getAll();
     - Manufacturer update(Manufacturer manufacturer);
     - boolean delete(Long id);
