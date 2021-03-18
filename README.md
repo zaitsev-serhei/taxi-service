@@ -16,7 +16,7 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer();
         // initialize field values using setters or constructor
         manufacturerDao.save(manufacturer);
-        // same for all other crud methods and for all models
+        // same for all other crud methods
     }
 }
 ```
