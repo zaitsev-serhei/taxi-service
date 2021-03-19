@@ -20,7 +20,7 @@ public class Main {
     }
 }
 ```
-
+- Your table should be named `manufacturers` and contain these columns: `manufacturer_id`, `manufacturer_name`, `manufacturer_country`.
 ### Java classes structure:
 - Manufacturer
 ```java
