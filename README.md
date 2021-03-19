@@ -20,8 +20,7 @@ public class Main {
     }
 }
 ```
-- Your table in DB should be called according to model name, in plural and lower case. For table's columns: `modelName_columnName`.
-
+- Your table should be named `manufacturers` and contain these columns: `manufacturer_id`, `manufacturer_name`, `manufacturer_country`.
 ### Java classes structure:
 - Manufacturer
 ```java
