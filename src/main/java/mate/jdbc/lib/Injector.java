@@ -3,7 +3,6 @@ package mate.jdbc.lib;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -62,6 +61,7 @@ public class Injector {
         }
         return newInstance;
     }
+
     /**
      * Scans all classes accessible from the context class loader which
      * belong to the given package and subpackages.
