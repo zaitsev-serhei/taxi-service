@@ -1,6 +1,7 @@
 # HW 02
 
 - Establish connection to your Database.
+- Create `init_db.sql` file in `src/main/resources` folder.
 - Create `Manufacturer` model.
 - Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
 - You're already given an injector and `@Dao` annotation. Do not forget to use it for Dao implementations.
@@ -20,7 +21,7 @@ public class Main {
     }
 }
 ```
-- Your table should be named `manufacturers` and contain these columns: `id`, `name`, `country`.
+- Your table should be named `manufacturers` and contain these columns: `id`, `name`, `country`, and `is_deleted`.
 ### Java classes structure:
 - Manufacturer
 ```java
