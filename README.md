@@ -33,6 +33,7 @@ public class Main {
     }
 }
 ```
+**WARNING!!!** Path to your project must contain only english letters. Also, it mustn't contain spaces. In other case `Injector` won't work correctly.
 - Your table should be named `manufacturers` and contain these columns: `id`, `name`, `country`, and `is_deleted`.
 ### Java classes structure:
 - Manufacturer
