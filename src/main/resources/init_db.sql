@@ -1,4 +1,4 @@
-create table manufacturer if not exists
+create table manufacturer
 (
     id        bigint auto_increment
         primary key,
