@@ -4,7 +4,7 @@ public class Manufacturer {
     private long id;
     private String name;
     private String country;
-    boolean isDeleted;
+    private boolean isDeleted;
 
     public long getId() {
         return id;
@@ -38,6 +38,9 @@ public class Manufacturer {
         isDeleted = deleted;
     }
 
+    public Manufacturer() {
+    }
+
     public Manufacturer(String name, String country) {
         this.name = name;
         this.country = country;
@@ -50,16 +53,12 @@ public class Manufacturer {
         this.isDeleted = false;
     }
 
-    public Manufacturer() {
-    }
-
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                ", isDeleted=" + isDeleted +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + ", isDeleted=" + isDeleted + '}';
     }
 }
