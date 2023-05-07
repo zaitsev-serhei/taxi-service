@@ -1,12 +1,12 @@
 package mate.jdbc.model;
 
 public class Manufacturer {
-    private long id;
+    private Long id;
     private String name;
     private String country;
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -30,7 +30,7 @@ public class Manufacturer {
         this.country = country;
     }
 
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return isDeleted;
     }
 
@@ -56,9 +56,8 @@ public class Manufacturer {
     @Override
     public String toString() {
         return "Manufacturer{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", country='" + country + '\''
-                + ", isDeleted=" + isDeleted + '}';
+                + "id =" + id
+                + ", name ='" + name + '\''
+                + ", country ='" + country +'}';
     }
 }

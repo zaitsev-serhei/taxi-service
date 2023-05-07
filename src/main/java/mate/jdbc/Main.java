@@ -13,7 +13,7 @@ public class Main {
         //  System.out.println(manufacturerDao.create(test));
         manufacturerDao.get(5L);
         System.out.println(manufacturerDao.getAll());
-        System.out.println(manufacturerDao.isDeleted(100L));
+        System.out.println(manufacturerDao.delete(100L));
         test.setDeleted(true);
         test.setId(15);
         System.out.println(test);

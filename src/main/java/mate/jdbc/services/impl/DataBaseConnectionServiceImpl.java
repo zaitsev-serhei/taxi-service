@@ -9,7 +9,6 @@ import mate.jdbc.exception.DataProcessingException;
 
 @Dao
 public class DataBaseConnectionServiceImpl implements DataBaseConnectionService {
-    private Connection connection = null;
     private static final String DB_URL = "jdbc:mysql://localhost:3306/taxi_application";
     private static final String USER_NAME = "root";
     private static final String DB_PASSWORD = "15975324865Germes!S";
@@ -17,12 +16,12 @@ public class DataBaseConnectionServiceImpl implements DataBaseConnectionService 
     @Override
     public Connection getConnection() {
         try {
-            this.connection = DriverManager.getConnection(DB_URL,USER_NAME,DB_PASSWORD);
+            Connection connection = DriverManager.getConnection(DB_URL,USER_NAME,DB_PASSWORD);
+            return connection;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t connect to data base with credentials!"
                     + "URL = " + DB_URL + System.lineSeparator()
                     + "Login = " + USER_NAME + System.lineSeparator(),throwables);
         }
-        return connection;
     }
 }
