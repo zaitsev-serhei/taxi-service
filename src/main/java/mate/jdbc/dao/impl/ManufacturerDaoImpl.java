@@ -77,13 +77,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateStatement = "UPDATE manufacturers SET name = ?, country = ?,"
+        String updateStatement = "UPDATE manufacturers SET name = ?, country = ?"
                 + "WHERE id = ? AND isDeleted = false ";
         try (Connection connection = new DataBaseConnectionServiceImpl().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateStatement)) {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
-            preparedStatement.setLong(4, manufacturer.getId());
+            preparedStatement.setLong(3, manufacturer.getId());
             if (preparedStatement.executeUpdate() > 0){
                 connection.close();
                 return manufacturer;
@@ -93,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         + manufacturer, null);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t update Manufacturer"
+            throw new DataProcessingException("Can`t update Manufacturer "
                     + manufacturer, e);
         }
     }
