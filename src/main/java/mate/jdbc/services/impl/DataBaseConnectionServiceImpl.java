@@ -20,8 +20,9 @@ public class DataBaseConnectionServiceImpl implements DataBaseConnectionService 
             return connection;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t connect to data base with credentials!"
-                    + "URL = " + DB_URL + System.lineSeparator()
-                    + "Login = " + USER_NAME + System.lineSeparator(),throwables);
+                    + System.lineSeparator() + "URL = " + DB_URL
+                    + System.lineSeparator() + "Login = " + USER_NAME
+                    + System.lineSeparator(),throwables);
         }
     }
 }

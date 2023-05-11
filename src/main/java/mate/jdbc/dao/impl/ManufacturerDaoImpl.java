@@ -19,7 +19,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String createStatement = "INSERT INTO manufacturers(name,country) VALUES (?,?)";
+        String createStatement = "INSERT INTO manufacturers(name,country) VALUES (?,?);";
         try (Connection connection = new DataBaseConnectionServiceImpl().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
                 Statement.RETURN_GENERATED_KEYS) ) {
@@ -78,7 +78,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateStatement = "UPDATE manufacturers SET name = ?, country = ?"
-                + "WHERE id = ? AND isDeleted = false ";
+                + "WHERE id = ? AND isDeleted = false ;";
         try (Connection connection = new DataBaseConnectionServiceImpl().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateStatement)) {
             preparedStatement.setString(1, manufacturer.getName());
@@ -100,7 +100,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE manufacturers SET isDeleted = true WHERE id = ? AND isDeleted = false";
+        String query = "UPDATE manufacturers SET isDeleted = true WHERE id = ? AND isDeleted = false;";
         try (Connection connection = new DataBaseConnectionServiceImpl().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
