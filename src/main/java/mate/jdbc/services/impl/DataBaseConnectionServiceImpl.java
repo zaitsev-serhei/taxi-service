@@ -3,9 +3,9 @@ package mate.jdbc.services.impl;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.services.DataBaseConnectionService;
-import mate.jdbc.exception.DataProcessingException;
 
 @Dao
 public class DataBaseConnectionServiceImpl implements DataBaseConnectionService {
