@@ -1,9 +1,7 @@
-create table manufacturers
+CREATE TABLE manufacturers
 (
-    id        bigint auto_increment
-        primary key,
-    name      varchar(150)      not null,
-    country   varchar(50)       not null,
-    isDeleted tinyint default 0 null
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name      VARCHAR(150) NOT NULL,
+    country   VARCHAR(50) NOT NULL,
+    isDeleted TINYINT DEFAULT 0 NOT NULL
 )
-    charset = utf8mb3;

@@ -1,20 +1,16 @@
-package mate.jdbc.services.impl;
+package mate.jdbc.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import mate.jdbc.exception.DataProcessingException;
-import mate.jdbc.lib.Dao;
-import mate.jdbc.services.DataBaseConnectionService;
 
-@Dao
-public class DataBaseConnectionServiceImpl implements DataBaseConnectionService {
+public class DbConnectionUtil {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/taxi_application";
     private static final String USER_NAME = "root";
     private static final String DB_PASSWORD = "15975324865Germes!S";
 
-    @Override
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             Connection connection = DriverManager.getConnection(DB_URL,USER_NAME,DB_PASSWORD);
             return connection;
