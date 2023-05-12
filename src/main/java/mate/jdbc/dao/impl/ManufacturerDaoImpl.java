@@ -21,7 +21,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String createStatement = "INSERT INTO manufacturers(name,country) VALUES (?,?);";
         try (Connection connection = DbConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
+                 PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
                          Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
@@ -42,7 +42,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Manufacturer manufacturer = new Manufacturer();
         String getStatement = "SELECT * FROM manufacturers WHERE id = ? AND isDeleted = false";
         try (Connection connection = DbConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(getStatement)) {
+                 PreparedStatement preparedStatement = connection.prepareStatement(getStatement)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -60,7 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         String getAllStatement = "SELECT * FROM manufacturers WHERE isDeleted = false ";
         try (Connection connection = DbConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
+                 PreparedStatement preparedStatement =
                          connection.prepareStatement(getAllStatement)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -78,7 +78,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String updateStatement = "UPDATE manufacturers SET name = ?, country = ?"
                 + "WHERE id = ? AND isDeleted = false ;";
         try (Connection connection = DbConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
+                 PreparedStatement preparedStatement =
                          connection.prepareStatement(updateStatement)) {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
@@ -96,7 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String query = "UPDATE manufacturers SET isDeleted = true "
                 + "WHERE id = ? AND isDeleted = false;";
         try (Connection connection = DbConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             int updatedRows = preparedStatement.executeUpdate();
             return updatedRows > 0;
