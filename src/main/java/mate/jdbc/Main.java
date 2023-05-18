@@ -11,10 +11,10 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer test = new Manufacturer("CreateTest","Ukraine");
-        //  System.out.println(manufacturerDao.create(test));
-        //manufacturerDao.get(5L);
-        //System.out.println(manufacturerDao.getAll());
-        //System.out.println(manufacturerDao.delete(10L));
+          System.out.println(manufacturerDao.create(test));
+        manufacturerDao.get(5L);
+        System.out.println(manufacturerDao.getAll());
+        System.out.println(manufacturerDao.delete(10L));
         //test.setDeleted(true);
         test.setId(5);
         System.out.println(test);
