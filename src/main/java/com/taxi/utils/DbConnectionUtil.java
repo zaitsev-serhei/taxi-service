@@ -1,9 +1,9 @@
-package mate.jdbc.utils;
+package com.taxi.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import mate.jdbc.exception.DataProcessingException;
+import com.taxi.exception.DataProcessingException;
 
 public class DbConnectionUtil {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/taxi_application";

@@ -1,4 +1,4 @@
-package mate.jdbc.dao.impl;
+package com.taxi.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,13 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.exception.DataProcessingException;
-import mate.jdbc.lib.Dao;
-import mate.jdbc.model.Manufacturer;
-import mate.jdbc.utils.DbConnectionUtil;
+import com.taxi.dao.ManufacturerDao;
+import com.taxi.exception.DataProcessingException;
+import com.taxi.model.Manufacturer;
+import com.taxi.utils.DbConnectionUtil;
+import org.springframework.stereotype.Repository;
 
-@Dao
+
+@Repository
 public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
