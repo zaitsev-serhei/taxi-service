@@ -8,8 +8,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
 
     public static void main(String[] args) {
-        /*ManufacturerDao manufacturerDao =
-                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);*/
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
         ManufacturerDao manufacturerDao = context.getBean(ManufacturerDao.class);
