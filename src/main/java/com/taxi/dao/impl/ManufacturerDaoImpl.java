@@ -1,5 +1,9 @@
 package com.taxi.dao.impl;
 
+import com.taxi.dao.ManufacturerDao;
+import com.taxi.exception.DataProcessingException;
+import com.taxi.model.Manufacturer;
+import com.taxi.utils.DbConnectionUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,12 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import com.taxi.dao.ManufacturerDao;
-import com.taxi.exception.DataProcessingException;
-import com.taxi.model.Manufacturer;
-import com.taxi.utils.DbConnectionUtil;
 import org.springframework.stereotype.Repository;
-
 
 @Repository
 public class ManufacturerDaoImpl implements ManufacturerDao {

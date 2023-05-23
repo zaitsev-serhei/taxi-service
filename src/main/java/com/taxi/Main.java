@@ -5,7 +5,6 @@ import com.taxi.dao.ManufacturerDao;
 import com.taxi.model.Manufacturer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-
 public class Main {
 
     public static void main(String[] args) {
