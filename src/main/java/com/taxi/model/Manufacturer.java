@@ -18,6 +18,13 @@ public class Manufacturer {
         this.country = country;
     }
 
+    public Manufacturer(Manufacturer manufacturer) {
+        this.id = manufacturer.getId();
+        this.name = manufacturer.getName();
+        this.country = manufacturer.getCountry();
+        this.isDeleted = manufacturer.isDeleted();
+    }
+
     public Manufacturer() {
     }
 
