@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DriverDaoImpl implements DriverDao {
-
     @Override
     public Driver create(Driver driver) {
         String createStatement = "INSERT INTO drivers(name,licence) VALUES (?,?);";
@@ -31,7 +30,7 @@ public class DriverDaoImpl implements DriverDao {
             Long recordId = resultSet.getObject(1, Long.class);
             driver.setId(recordId);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new Manufacturer "
+            throw new DataProcessingException("Can`t create new Driver "
                     + driver, e);
         }
         return driver;
@@ -50,7 +49,7 @@ public class DriverDaoImpl implements DriverDao {
             }
             return Optional.ofNullable(driver);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get Manufacturer with id "
+            throw new DataProcessingException("Can`t get Driver with id "
                     + id, e);
         }
     }
@@ -68,7 +67,7 @@ public class DriverDaoImpl implements DriverDao {
             }
             return driverList;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all Manufacturers in the List !"
+            throw new DataProcessingException("Can`t get all Driver in the List !"
                     + driverList.toString(), e);
         }
     }
@@ -86,7 +85,7 @@ public class DriverDaoImpl implements DriverDao {
             preparedStatement.executeUpdate();
             return driver;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t update Manufacturer "
+            throw new DataProcessingException("Can`t update Driver "
                     + driver, e);
         }
     }
@@ -101,7 +100,7 @@ public class DriverDaoImpl implements DriverDao {
             int updatedRows = preparedStatement.executeUpdate();
             return updatedRows > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t extract data for Manufacturer with id "
+            throw new DataProcessingException("Can`t extract data for Driver with id "
                     + id, e);
         }
     }
@@ -110,7 +109,7 @@ public class DriverDaoImpl implements DriverDao {
         Driver driver = new Driver();
         driver.setId(resultSet.getObject("id", Long.class));
         driver.setName(resultSet.getString("name"));
-        driver.setLicenseNumber(resultSet.getString("country"));
+        driver.setLicenseNumber(resultSet.getString("licence"));
         driver.setDeleted(resultSet.getBoolean("isDeleted"));
         return driver;
     }

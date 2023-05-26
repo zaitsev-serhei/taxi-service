@@ -3,8 +3,11 @@ package com.taxi.services.impl;
 import com.taxi.dao.DriverDao;
 import com.taxi.model.Driver;
 import com.taxi.services.DriverService;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class DriverServiceImpl implements DriverService {
     private DriverDao driverDao;
 
@@ -13,8 +16,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver create(Driver manufacturer) {
-        return driverDao.create(manufacturer);
+    public Driver create(Driver driver) {
+        return driverDao.create(driver);
     }
 
     @Override
@@ -28,8 +31,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver update(Driver manufacturer) {
-        return driverDao.update(manufacturer);
+    public Driver update(Driver driver) {
+        return driverDao.update(driver);
     }
 
     @Override

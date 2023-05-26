@@ -4,14 +4,13 @@ import com.taxi.model.Driver;
 import java.util.List;
 
 public interface DriverService {
-
-    Driver create(Driver manufacturer);
+    Driver create(Driver driver);
 
     Driver get(Long id);
 
     List<Driver> getAll();
 
-    Driver update(Driver manufacturer);
+    Driver update(Driver driver);
 
     boolean delete(Long id);
 }
