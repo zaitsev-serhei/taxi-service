@@ -3,9 +3,8 @@ package com.taxi.services.impl;
 import com.taxi.dao.ManufacturerDao;
 import com.taxi.model.Manufacturer;
 import com.taxi.services.ManufacturerService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ManufacturerServiceImpl implements ManufacturerService {

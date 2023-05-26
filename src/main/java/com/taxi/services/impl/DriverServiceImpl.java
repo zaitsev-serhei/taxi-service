@@ -3,9 +3,8 @@ package com.taxi.services.impl;
 import com.taxi.dao.DriverDao;
 import com.taxi.model.Driver;
 import com.taxi.services.DriverService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DriverServiceImpl implements DriverService {
