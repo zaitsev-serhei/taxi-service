@@ -6,6 +6,15 @@ public class Driver {
     private String licenseNumber;
     private Boolean isDeleted;
 
+    public Driver() {
+
+    }
+
+    public Driver(String name, String licenseNumber) {
+        this.name = name;
+        this.licenseNumber = licenseNumber;
+    }
+
     public Boolean getDeleted() {
         return isDeleted;
     }

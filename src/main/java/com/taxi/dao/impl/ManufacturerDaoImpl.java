@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private DbConnectionUtil connectionUtil;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
