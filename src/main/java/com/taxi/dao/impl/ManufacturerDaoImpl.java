@@ -16,11 +16,16 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ManufacturerDaoImpl implements ManufacturerDao {
+    private DbConnectionUtil connectionUtil;
+
+    public ManufacturerDaoImpl(DbConnectionUtil connectionUtil) {
+        this.connectionUtil = connectionUtil;
+    }
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String createStatement = "INSERT INTO manufacturers(name,country) VALUES (?,?);";
-        try (Connection connection = DbConnectionUtil.getConnection();
+        try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
                          Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, manufacturer.getName());
@@ -41,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = new Manufacturer();
         String getStatement = "SELECT * FROM manufacturers WHERE id = ? AND isDeleted = false";
-        try (Connection connection = DbConnectionUtil.getConnection();
+        try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(getStatement)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -59,7 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         String getAllStatement = "SELECT * FROM manufacturers WHERE isDeleted = false ";
-        try (Connection connection = DbConnectionUtil.getConnection();
+        try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(getAllStatement)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -77,7 +82,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateStatement = "UPDATE manufacturers SET name = ?, country = ?"
                 + "WHERE id = ? AND isDeleted = false ;";
-        try (Connection connection = DbConnectionUtil.getConnection();
+        try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(updateStatement)) {
             preparedStatement.setString(1, manufacturer.getName());
@@ -95,7 +100,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String query = "UPDATE manufacturers SET isDeleted = true "
                 + "WHERE id = ? AND isDeleted = false;";
-        try (Connection connection = DbConnectionUtil.getConnection();
+        try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             int updatedRows = preparedStatement.executeUpdate();

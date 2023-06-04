@@ -13,3 +13,5 @@ CREATE TABLE drivers
     licence VARCHAR (20) NOT NULL,
     isDeleted TINYINT DEFAULT 0 NOT NULL
 )
+
+SET GLOBAL time_zone = '+3:00'
