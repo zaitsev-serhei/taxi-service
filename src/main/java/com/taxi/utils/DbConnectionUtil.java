@@ -4,20 +4,25 @@ import com.taxi.exception.DataProcessingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DbConnectionUtil {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/taxi_application";
-    private static final String USER_NAME = "root";
-    private static final String DB_PASSWORD = "15975324865Germes!S";
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+    @Value("${spring.datasource.username}")
+    private String userName;
+    @Value("${spring.datasource.password}")
+    private String dbPassword;
 
-    public static Connection getConnection() {
-        Properties properties = new Properties();
+    public Connection getConnection() {
         try {
-            Connection connection = DriverManager.getConnection(DB_URL,USER_NAME,DB_PASSWORD);
+            Connection connection = DriverManager.getConnection(dbUrl, userName, dbPassword);
             return connection;
         } catch (SQLException exception) {
-            throw new DataProcessingException("Can`t connect to data base with credentials!", exception);
+            throw new DataProcessingException("Can`t connect to data base with credentials!"
+                    + dbUrl + userName + dbPassword, exception);
         }
     }
 }
