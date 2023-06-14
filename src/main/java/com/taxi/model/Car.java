@@ -7,7 +7,7 @@ public class Car {
     private Long id;
     private String model;
     private Manufacturer manufacturer;
-    private Set<Driver> driverSet;
+    private Set<Driver> drivers;
     private Boolean isDeleted;
 
     public Car() {
