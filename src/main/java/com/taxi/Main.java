@@ -28,17 +28,22 @@ public class Main {
         //System.out.println(driverService.get(3L));
         //System.out.println(driverService.getAll());
         //System.out.println(driverService.delete(4L));
-        Driver driverToUpdate = driverService.get(3L);
+        Driver driverToUpdate = driverService.get(6L);
+        System.out.println(driverToUpdate);
         //driverToUpdate.setId(4L);
         //System.out.println(driverService.update(driverToUpdate));
         CarService carService = context.getBean(CarService.class);
-        Car testCar = carService.get(17L);
-        //System.out.println(carService.create(testCar));
+        Car testCar = carService.get(4L);
+        //Car carToCreate = new Car("NTM", manufacturer);
+        //System.out.println(carService.create(carToCreate));
         //testCar.setModel("MR2");
         //System.out.println(carService.update(testCar));
         carService.addDriverToCar(driverToUpdate,testCar);
         System.out.println(testCar);
         System.out.println(carService.getAllByDriver(3L));
-        System.out.println(carService.get(17L));
+        System.out.println(carService.get(testCar.getId()));
+        carService.removeDriverFromCar(driverToUpdate,testCar);
+        System.out.println(carService.get(testCar.getId()));
+        System.out.println(carService.getAll());
     }
 }
