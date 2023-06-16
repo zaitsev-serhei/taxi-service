@@ -7,25 +7,25 @@ public class Car {
     private Long id;
     private String model;
     private Manufacturer manufacturer;
-    private Set<Driver> driverSet;
+    private Set<Driver> drivers;
     private Boolean isDeleted;
 
     public Car() {
-        this.driverSet = new HashSet<>();
+        this.drivers = new HashSet<>();
     }
 
     public Car(String model, Manufacturer manufacturer) {
         this.model = model;
         this.manufacturer = manufacturer;
-        this.driverSet = new HashSet<>();
+        this.drivers = new HashSet<>();
     }
 
-    public Set<Driver> getDriverSet() {
-        return driverSet;
+    public Set<Driver> getDrivers() {
+        return drivers;
     }
 
-    public void setDriverSet(Set<Driver> driverSet) {
-        this.driverSet = new HashSet<>(driverSet);
+    public void setDrivers(Set<Driver> drivers) {
+        this.drivers = new HashSet<>(drivers);
     }
 
     public Boolean getDeleted() {
@@ -65,7 +65,7 @@ public class Car {
         return "Car{"
                 + "id=" + id + ", model ='" + model + '\''
                 + ", manufacturer =" + manufacturer
-                + ", drivers = " + driverSet
+                + ", drivers = " + drivers
                 + '}';
 
     }
