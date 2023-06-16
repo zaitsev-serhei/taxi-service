@@ -209,11 +209,11 @@ public class CarDaoImpl implements CarDao {
 
     private Set<Driver> getDrivers(Car car, Connection connection) {
         Set<Driver> driverSet = new HashSet<>();
-        String removeDriversString = "SELECT d.id, d.name, d.licence, d.isDeleted"
+        String getDriversString = "SELECT d.id, d.name, d.licence, d.isDeleted"
                 + " FROM drivers  d"
                 + " JOIN cars_drivers cd ON d.id = cd.driver_id "
                 + " WHERE car_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(removeDriversString)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(getDriversString)) {
             preparedStatement.setLong(1, car.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
