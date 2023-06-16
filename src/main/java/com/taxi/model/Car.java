@@ -20,11 +20,11 @@ public class Car {
         this.driverSet = new HashSet<>();
     }
 
-    public Set<Driver> getDriverSet() {
+    public Set<Driver> getDrivers() {
         return driverSet;
     }
 
-    public void setDriverSet(Set<Driver> driverSet) {
+    public void setDrivers(Set<Driver> driverSet) {
         this.driverSet = new HashSet<>(driverSet);
     }
 
