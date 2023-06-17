@@ -28,9 +28,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
                          Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.executeUpdate();
+            connection.commit();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             Long recordId = resultSet.getObject(1, Long.class);
@@ -85,10 +87,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(updateStatement)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.setLong(3, manufacturer.getId());
             preparedStatement.executeUpdate();
+            connection.commit();
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t update Manufacturer "

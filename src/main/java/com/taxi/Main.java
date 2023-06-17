@@ -10,7 +10,6 @@ import com.taxi.services.ManufacturerService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
-    //
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
@@ -29,7 +28,7 @@ public class Main {
         //System.out.println(driverService.getAll());
         //System.out.println(driverService.delete(4L));
         Driver driverToUpdate = driverService.get(6L);
-        System.out.println(driverToUpdate);
+        //System.out.println(driverToUpdate);
         //driverToUpdate.setId(4L);
         //System.out.println(driverService.update(driverToUpdate));
         CarService carService = context.getBean(CarService.class);
@@ -38,12 +37,15 @@ public class Main {
         //System.out.println(carService.create(carToCreate));
         //testCar.setModel("MR2");
         //System.out.println(carService.update(testCar));
+        System.out.println(carService.get(testCar.getId()));
         carService.addDriverToCar(driverToUpdate,testCar);
-        System.out.println(testCar);
-        System.out.println(carService.getAllByDriver(3L));
+        //System.out.println(testCar);
+        //System.out.println(carService.getAllByDriver(3L));
+        System.out.println(carService.get(testCar.getId()));
+        testCar.setModel("333333");
         System.out.println(carService.get(testCar.getId()));
         carService.removeDriverFromCar(driverToUpdate,testCar);
         System.out.println(carService.get(testCar.getId()));
-        System.out.println(carService.getAll());
+        //System.out.println(carService.getAll());
     }
 }
