@@ -29,9 +29,9 @@ public class CarDaoImpl implements CarDao {
     @Override
     public Car create(Car car) {
         String createStatement = "INSERT INTO cars(model,manufacturer_id) VALUES (?,?);";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
-                         Statement.RETURN_GENERATED_KEYS)) {
+        Connection connection = connectionUtil.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
+                Statement.RETURN_GENERATED_KEYS)) {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, (car.getModel()));
             preparedStatement.setLong(2, car.getManufacturer().getId());
@@ -42,9 +42,23 @@ public class CarDaoImpl implements CarDao {
             Long recordId = resultSet.getObject(1, Long.class);
             car.setId(recordId);
             return car;
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new Car "
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    System.out.println("Transaction in Create Car was rolled back ");
+                    connection.rollback();
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
+            throw new DataProcessingException("Can`t update Car "
                     + car, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -60,7 +74,7 @@ public class CarDaoImpl implements CarDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 car = parseCar(resultSet);
-                car.setDrivers(getDrivers(car,connection));
+                car.setDrivers(getDrivers(car, connection));
             }
             return Optional.ofNullable(car);
         } catch (SQLException e) {
@@ -95,9 +109,9 @@ public class CarDaoImpl implements CarDao {
     public Car update(Car car) {
         String updateStatement = "UPDATE cars SET model = ?, manufacturer_id = ?"
                 + " WHERE id = ? AND isDeleted = false ;";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement preparedStatement =
-                         connection.prepareStatement(updateStatement)) {
+        Connection connection = connectionUtil.getConnection();
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(updateStatement)) {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, car.getModel());
             preparedStatement.setLong(2, car.getManufacturer().getId());
@@ -107,9 +121,23 @@ public class CarDaoImpl implements CarDao {
             addDriversForCar(car, connection);
             connection.commit();
             return car;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    System.out.println("Transaction in Update Car was rolled back ");
+                    connection.rollback();
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
             throw new DataProcessingException("Can`t update Car "
                     + car, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -143,7 +171,7 @@ public class CarDaoImpl implements CarDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Car car = parseCar(resultSet);
-                car.setDrivers(getDrivers(car,connection));
+                car.setDrivers(getDrivers(car, connection));
                 carList.add(car);
             }
             return carList;
@@ -192,14 +220,13 @@ public class CarDaoImpl implements CarDao {
             }
         } catch (SQLException exception) {
             throw new DataProcessingException("Can`t update Driver list for Car "
-            + car, exception);
+                    + car, exception);
         }
     }
 
     private void removeDriversForCar(Car car, Connection connection) {
         String removeDriversString = "DELETE FROM cars_drivers WHERE car_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(removeDriversString)) {
-            //int a = 5/0;
             preparedStatement.setLong(1, car.getId());
             preparedStatement.executeUpdate();
         } catch (Exception exception) {

@@ -84,9 +84,9 @@ public class DriverDaoImpl implements DriverDao {
     public Driver update(Driver driver) {
         String updateStatement = "UPDATE drivers SET name = ?, licence = ?"
                 + "WHERE id = ? AND isDeleted = false ;";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement preparedStatement =
-                         connection.prepareStatement(updateStatement)) {
+        Connection connection = connectionUtil.getConnection();
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(updateStatement)) {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenseNumber());
@@ -94,9 +94,23 @@ public class DriverDaoImpl implements DriverDao {
             preparedStatement.executeUpdate();
             connection.commit();
             return driver;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    System.out.println("Transaction in Update Driver was rolled back ");
+                    connection.rollback();
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
             throw new DataProcessingException("Can`t update Driver "
                     + driver, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
