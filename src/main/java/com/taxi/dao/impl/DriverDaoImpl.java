@@ -100,6 +100,7 @@ public class DriverDaoImpl implements DriverDao {
                     System.out.println("Transaction in Update Driver was rolled back ");
                     connection.rollback();
                 } catch (SQLException exception) {
+                    // TODO: 21.06.2023 add logs instead of printStackTrace
                     exception.printStackTrace();
                 }
             }
@@ -109,6 +110,7 @@ public class DriverDaoImpl implements DriverDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
+                // TODO: 21.06.2023 add logs instead of printStackTrace
                 exception.printStackTrace();
             }
         }
