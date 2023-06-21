@@ -113,9 +113,10 @@ public class CarDaoImpl implements CarDao {
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    System.out.println("Transaction in Update Car was rolled back ");
+                    // TODO: 21.06.2023 add logs instead of printStackTrace
                     connection.rollback();
                 } catch (SQLException exception) {
+                    // TODO: 21.06.2023 add logs instead of printStackTrace
                     exception.printStackTrace();
                 }
             }
