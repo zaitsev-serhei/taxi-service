@@ -109,7 +109,7 @@ public class CarDaoImpl implements CarDao {
     @Override
     public Car update(Car car) {
         Connection connection = connectionUtil.getConnection();
-        try  {
+        try {
             connection.setAutoCommit(false);
             updateCar(car,connection);
             removeDriversForCar(car, connection);
@@ -204,7 +204,7 @@ public class CarDaoImpl implements CarDao {
         return driver;
     }
 
-    private void updateCar (Car car, Connection connection) {
+    private void updateCar(Car car, Connection connection) {
         String updateStatement = "UPDATE cars SET model = ?, manufacturer_id = ?"
                 + " WHERE id = ? AND isDeleted = false ;";
         try (PreparedStatement preparedStatement =
