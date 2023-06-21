@@ -42,7 +42,7 @@ public class Main {
         //System.out.println(testCar);
         //System.out.println(carService.getAllByDriver(3L));
         System.out.println(carService.get(testCar.getId()));
-        testCar.setModel("4444");
+        testCar.setModel("4555");
         System.out.println(carService.get(testCar.getId()));
         carService.removeDriverFromCar(driverToUpdate,testCar);
         System.out.println(carService.get(testCar.getId()));

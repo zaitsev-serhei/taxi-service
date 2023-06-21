@@ -36,6 +36,7 @@ public class CarDaoImpl implements CarDao {
             preparedStatement.setString(1, (car.getModel()));
             preparedStatement.setLong(2, car.getManufacturer().getId());
             preparedStatement.executeUpdate();
+            addDriversForCar(car,connection);
             connection.commit();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
@@ -107,16 +108,10 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public Car update(Car car) {
-        String updateStatement = "UPDATE cars SET model = ?, manufacturer_id = ?"
-                + " WHERE id = ? AND isDeleted = false ;";
         Connection connection = connectionUtil.getConnection();
-        try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(updateStatement)) {
+        try  {
             connection.setAutoCommit(false);
-            preparedStatement.setString(1, car.getModel());
-            preparedStatement.setLong(2, car.getManufacturer().getId());
-            preparedStatement.setLong(3, car.getId());
-            preparedStatement.executeUpdate();
+            updateCar(car,connection);
             removeDriversForCar(car, connection);
             addDriversForCar(car, connection);
             connection.commit();
@@ -207,6 +202,21 @@ public class CarDaoImpl implements CarDao {
         driver.setLicenseNumber(resultSet.getString("licence"));
         driver.setDeleted(resultSet.getBoolean("isDeleted"));
         return driver;
+    }
+
+    private void updateCar (Car car, Connection connection) {
+        String updateStatement = "UPDATE cars SET model = ?, manufacturer_id = ?"
+                + " WHERE id = ? AND isDeleted = false ;";
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(updateStatement)) {
+            preparedStatement.setString(1, car.getModel());
+            preparedStatement.setLong(2, car.getManufacturer().getId());
+            preparedStatement.setLong(3, car.getId());
+            preparedStatement.executeUpdate();
+        } catch (Exception exception) {
+            throw new DataProcessingException("Can`t invoke update Car "
+                    + car, exception);
+        }
     }
 
     private void addDriversForCar(Car car, Connection connection) {
