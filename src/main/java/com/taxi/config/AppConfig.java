@@ -14,5 +14,4 @@ public class AppConfig {
     public AppConfig(Environment environment) {
         this.environment = environment;
     }
-
 }
