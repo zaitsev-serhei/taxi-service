@@ -28,9 +28,11 @@ public class DriverDaoImpl implements DriverDao {
         try (Connection connection = connectionUtil.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
                          Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenseNumber());
             preparedStatement.executeUpdate();
+            connection.commit();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             Long recordId = resultSet.getObject(1, Long.class);
@@ -82,17 +84,35 @@ public class DriverDaoImpl implements DriverDao {
     public Driver update(Driver driver) {
         String updateStatement = "UPDATE drivers SET name = ?, licence = ?"
                 + "WHERE id = ? AND isDeleted = false ;";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement preparedStatement =
-                         connection.prepareStatement(updateStatement)) {
+        Connection connection = connectionUtil.getConnection();
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(updateStatement)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenseNumber());
             preparedStatement.setLong(3, driver.getId());
             preparedStatement.executeUpdate();
+            connection.commit();
             return driver;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    System.out.println("Transaction in Update Driver was rolled back ");
+                    connection.rollback();
+                } catch (SQLException exception) {
+                    // TODO: 21.06.2023 add logs instead of printStackTrace
+                    exception.printStackTrace();
+                }
+            }
             throw new DataProcessingException("Can`t update Driver "
                     + driver, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException exception) {
+                // TODO: 21.06.2023 add logs instead of printStackTrace
+                exception.printStackTrace();
+            }
         }
     }
 

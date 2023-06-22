@@ -25,21 +25,39 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String createStatement = "INSERT INTO manufacturers(name,country) VALUES (?,?);";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
-                         Statement.RETURN_GENERATED_KEYS)) {
+        Connection connection = connectionUtil.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
+                Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.executeUpdate();
+            connection.commit();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             Long recordId = resultSet.getObject(1, Long.class);
             manufacturer.setId(recordId);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new Manufacturer "
-                    + manufacturer, e);
+            return manufacturer;
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    System.out.println("Transaction in Create Manufacturer was rolled back ");
+                    connection.rollback();
+                } catch (SQLException exception) {
+                    // TODO: 21.06.2023 add logs instead of printStackTrace
+                    exception.printStackTrace();
+                }
+            }
+            throw new DataProcessingException("Can`t update Manufacturer " + manufacturer, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException exception) {
+                // TODO: 21.06.2023 add logs instead of printStackTrace
+                exception.printStackTrace();
+            }
         }
-        return manufacturer;
+
     }
 
     @Override
@@ -51,7 +69,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = getManufacturer(resultSet);
+                manufacturer = parseManufacturer(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
@@ -69,7 +87,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          connection.prepareStatement(getAllStatement)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                manufacturerList.add(getManufacturer(resultSet));
+                manufacturerList.add(parseManufacturer(resultSet));
             }
             return manufacturerList;
         } catch (SQLException e) {
@@ -82,17 +100,36 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateStatement = "UPDATE manufacturers SET name = ?, country = ?"
                 + "WHERE id = ? AND isDeleted = false ;";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement preparedStatement =
-                         connection.prepareStatement(updateStatement)) {
+        Connection connection = connectionUtil.getConnection();
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(updateStatement)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.setLong(3, manufacturer.getId());
             preparedStatement.executeUpdate();
+            connection.commit();
             return manufacturer;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    // TODO: 21.06.2023 add logs instead of sout
+                    System.out.println("Transaction in Update Manufacturer was rolled back ");
+                    connection.rollback();
+                } catch (SQLException exception) {
+                    // TODO: 21.06.2023 add logs instead of printStackTrace
+                    exception.printStackTrace();
+                }
+            }
             throw new DataProcessingException("Can`t update Manufacturer "
                     + manufacturer, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException exception) {
+                // TODO: 21.06.2023 add logs instead of printStackTrace
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -111,7 +148,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(resultSet.getObject("id", Long.class));
         manufacturer.setName(resultSet.getString("name"));
