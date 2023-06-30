@@ -3,55 +3,73 @@ import com.taxi.model.Manufacturer
 import com.taxi.services.impl.ManufacturerServiceImpl
 import spock.lang.Specification
 
-class ManufacturerServiceSpec extends  Specification{
-    def "call create method in ManufacturerService"() {
+class ManufacturerServiceSpec extends Specification {
+    ManufacturerDao manufacturerDao = Mock()
+    def manufacturerService = new ManufacturerServiceImpl(manufacturerDao)
+
+    def "create(Manufacturer manufacturer) test"() {
         given:
-        ManufacturerDao manufacturerDao = Mock()
         Manufacturer manufacturer = Mock()
-        def manufacturerService = new ManufacturerServiceImpl(manufacturerDao)
+
         when:
         manufacturerService.create(manufacturer)
+
         then:
-        1*manufacturerDao.create(manufacturer)
+        1 * manufacturerDao.create(manufacturer)
+        0 * _
     }
-    def "call get method in ManufacturerService"() {
+
+    def "get(Long id) when manufacturer by id present in the DB"() {
         given:
-        ManufacturerDao manufacturerDao = Mock()
         Long id = 4L
-        def manufacturerService = new ManufacturerServiceImpl(manufacturerDao)
+        Manufacturer expected = new Manufacturer(id: id)
+
         when:
-        manufacturerService.get(id)
+        Manufacturer actual = manufacturerService.get(id)
+
         then:
-        1*manufacturerDao.get(id)
-        thrown(NullPointerException)
+        1 * manufacturerDao.get(id) >> Optional.of(expected)
+        0 * _
+        actual == expected
     }
-    def "call getAll method in ManufacturerService"() {
+
+    def "getAll() test"() {
         given:
-        ManufacturerDao manufacturerDao = Mock()
-        def manufacturerService = new ManufacturerServiceImpl(manufacturerDao)
+        Manufacturer manuf_1 = new Manufacturer(id: 1,name: "test_1")
+        Manufacturer manuf_2 = new Manufacturer(id: 2,name: "test_2")
+        Manufacturer manuf_3 = new Manufacturer(id: 3,name: "test_3")
+        List<Manufacturer> expected = [manuf_1, manuf_2, manuf_3]
+
         when:
-        manufacturerService.getAll()
+        List<Manufacturer> actual = manufacturerService.getAll()
+
         then:
-        1*manufacturerDao.getAll()
+        1 * manufacturerDao.getAll() >> expected
+        0 * _
+        actual == expected
     }
-    def "call update method in ManufacturerService"() {
+
+    def "update(Manufacturer manufacturer) test"() {
         given:
-        ManufacturerDao manufacturerDao = Mock()
         Manufacturer manufacturer = Mock()
-        def manufacturerService = new ManufacturerServiceImpl(manufacturerDao)
+
         when:
         manufacturerService.update(manufacturer)
+
         then:
-        1*manufacturerDao.update(manufacturer)
+        1 * manufacturerDao.update(manufacturer)
+        0 * _
     }
-    def "call delete method in ManufacturerService"() {
+
+    def "delete(Long id) test"() {
         given:
-        ManufacturerDao manufacturerDao = Mock()
         Long id = 4L
-        def manufacturerService = new ManufacturerServiceImpl(manufacturerDao)
+
         when:
         manufacturerService.delete(id)
+
         then:
-        1*manufacturerDao.delete(id)
+        1 * manufacturerDao.delete(id)
+        0 * _
     }
 }

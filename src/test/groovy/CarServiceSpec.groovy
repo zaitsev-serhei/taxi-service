@@ -5,92 +5,119 @@ import com.taxi.services.impl.CarServiceImpl
 import spock.lang.Specification
 
 class CarServiceSpec extends Specification {
-    def "call create method in CarService" () {
+    CarDao carDao = Mock();
+    def carService = new CarServiceImpl(carDao);
+
+    def "create(Car car) test"() {
         given:
-            CarDao carDao = Mock();
-            def carService = new CarServiceImpl(carDao);
-            Car car = Mock();
-
-        when: carService.create(car)
-
-        then: 1*carDao.create(car);
-    }
-    def "call get method in CarService"() {
-        given:
-        CarDao carDao = Mock();
-        def id =4L;
-        def carService = new CarServiceImpl(carDao);
-
-        when: carService.get(id)
-
-        then: 1*carDao.get(id);
-        thrown(NullPointerException)
-    }
-    def "call getAll method in CarService"() {
-        given:
-        CarDao carDao = Mock();
-        def carService = new CarServiceImpl(carDao);
-
-        when: carService.getAll()
-
-        then: 1*carDao.getAll()
-    }
-    def "call update method in CarService"() {
-        given:
-        CarDao carDao = Mock();
         Car car = Mock();
-        def carService = new CarServiceImpl(carDao);
 
-        when: carService.update(car)
-
-        then: 1*carDao.update(car);
-    }
-    def "call delete method in CarService"() {
-        given:
-        CarDao carDao = Mock();
-        def carService = new CarServiceImpl(carDao);
-        def id;
-
-        when: carService.delete(id)
-
-        then: 1*carDao.delete(id);
-    }
-    def "call addDriverToCar method in CarService"() {
-        given:
-        CarDao carDao = Mock();
-        Car car = new Car();
-        Driver driver = Mock();
-        def carService = new CarServiceImpl(carDao);
-
-        when: carService.addDriverToCar(driver,car)
+        when:
+        carService.create(car)
 
         then:
-        1*carDao.update(car);
+        1 * carDao.create(car);
+        0 * _
+    }
+
+    def "get(Long id) when car by id present in the DB"() {
+        given:
+        long id = 4L;
+        Car expected = new Car(id: id)
+
+        when:
+        Car actual = carService.get(id)
+
+        then:
+        1 * carDao.get(id) >> Optional.of(expected);
+        0 * _
+        actual == expected
+    }
+
+    def "getAll() test"() {
+        given:
+        Car car_1 = new Car(id: 1, model: "model_1")
+        Car car_2 = new Car(id: 2, model: "model_2")
+        Car car_3 = new Car(id: 3, model: "model_3")
+        List<Car> expected = [car_1, car_2, car_3]
+
+        when:
+        List<Car> actual = carService.getAll()
+
+        then:
+        1 * carDao.getAll() >> expected
+        0 * _
+        actual == expected
+    }
+
+    def "update(Car car) test"() {
+        given:
+        Car car = Mock();
+
+        when:
+        carService.update(car)
+
+        then:
+        1 * carDao.update(car);
+        0 * _
+    }
+
+    def "delete(Long id) test"() {
+        given:
+        long id = 4;
+
+        when:
+        carService.delete(id)
+
+        then:
+        1 * carDao.delete(id);
+        0 * _
+    }
+
+    def "addDriverToCar(Driver driver, Car car) both are present in the DB"() {
+        given:
+        Car car = new Car();
+        Driver driver = Mock();
+
+        when:
+        carService.addDriverToCar(driver, car)
+
+        then:
+        1 * carDao.update(car);
+        0 * _
         car.getDrivers().isEmpty() == false
     }
-    def "call RemoveDriverFromCar method in CarService"() {
+
+    def "RemoveDriverFromCar(Driver driver, Car car) both are present in the DB"() {
         given:
-        CarDao carDao = Mock();
         Car car = new Car();
         Driver driver = Mock();
         car.getDrivers().add(driver)
-        def carService = new CarServiceImpl(carDao);
 
-        when: carService.removeDriverFromCar(driver,car)
+        when:
+        carService.removeDriverFromCar(driver, car)
 
-        then: 1*carDao.update(car);
+        then:
+        1 * carDao.update(car);
+        0 * _
         car.getDrivers().isEmpty() == true
     }
-    def "call getAllByDriver method in CarService"() {
+
+    def "getAllByDriver(Long driverId) driver exists in the DB"() {
         given:
-        CarDao carDao = Mock();
-        def carService = new CarServiceImpl(carDao);
-        def id;
+        Driver driver = new Driver(id: 4)
+        Car car_1 = new Car(id: 1)
+        car_1.getDrivers().add(driver)
+        Car car_2 = new Car(id: 2)
+        car_2.getDrivers().add(driver)
+        List<Car> expected = [car_1, car_2]
 
-        when: carService.getAllByDriver(id)
+        when:
+        List<Car> actual = carService.getAllByDriver(driver.getId())
 
-        then: 1*carDao.getAllByDriver(id)
+        then:
+        1 * carDao.getAllByDriver(driver.getId()) >> expected
+        0 * _
+        actual == expected
     }
-
-
 }
