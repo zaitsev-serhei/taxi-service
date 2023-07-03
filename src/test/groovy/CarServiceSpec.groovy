@@ -1,6 +1,7 @@
 import com.taxi.dao.CarDao
 import com.taxi.model.Car
 import com.taxi.model.Driver
+import com.taxi.model.Manufacturer
 import com.taxi.services.impl.CarServiceImpl
 import spock.lang.Specification
 
@@ -10,14 +11,15 @@ class CarServiceSpec extends Specification {
 
     def "create(Car car) test"() {
         given:
-        Car car = Mock();
+        Car expected = new Car(id:1);
 
         when:
-        carService.create(car)
+        Car actual = carService.create(expected)
 
         then:
-        1 * carDao.create(car);
+        1 * carDao.create(expected) >> expected
         0 * _
+        actual == expected
     }
 
     def "get(Long id) when car by id present in the DB"() {
@@ -52,14 +54,18 @@ class CarServiceSpec extends Specification {
 
     def "update(Car car) test"() {
         given:
-        Car car = Mock();
+        Manufacturer manufacturer = new Manufacturer(name: "BMV" )
+        Car expected = new Car(id: 1, manufacturer: manufacturer)
 
         when:
-        carService.update(car)
+        expected.getManufacturer().setName("BTR")
+        Car actual = carService.update(expected)
 
         then:
-        1 * carDao.update(car);
+        1 * carDao.update(expected) >> expected
         0 * _
+        actual.getManufacturer().getName() == "BTR"
+        actual.getId() == expected.getId()
     }
 
     def "delete(Long id) test"() {
@@ -77,7 +83,10 @@ class CarServiceSpec extends Specification {
     def "addDriverToCar(Driver driver, Car car) both are present in the DB"() {
         given:
         Car car = new Car();
-        Driver driver = Mock();
+        Driver driver = new Driver(id: 1, name: "Dave");
+        Driver drive_2 = new Driver(id: 3,name: "Den");
+        Driver drive_3 = new Driver(id: 2,name: "Denise");
+        car.getDrivers().addAll([drive_2,drive_3]);
 
         when:
         carService.addDriverToCar(driver, car)
@@ -85,14 +94,18 @@ class CarServiceSpec extends Specification {
         then:
         1 * carDao.update(car);
         0 * _
-        car.getDrivers().isEmpty() == false
+        !car.getDrivers().isEmpty()
+        car.getDrivers().size() == 3
+        car.getDrivers().contains(driver)
     }
 
     def "RemoveDriverFromCar(Driver driver, Car car) both are present in the DB"() {
         given:
         Car car = new Car();
-        Driver driver = Mock();
-        car.getDrivers().add(driver)
+        Driver driver = new Driver(id: 1, name: "John")
+        Driver drive_2 = new Driver(id: 3, name: "Den");
+        Driver drive_3 = new Driver(id: 2, name: "Denise");
+        car.getDrivers().addAll(driver, drive_2, drive_3);
 
         when:
         carService.removeDriverFromCar(driver, car)
@@ -100,7 +113,10 @@ class CarServiceSpec extends Specification {
         then:
         1 * carDao.update(car);
         0 * _
-        car.getDrivers().isEmpty() == true
+        !car.getDrivers().isEmpty()
+        !car.getDrivers().contains(driver)
+        car.getDrivers().size() == 2
+
     }
 
     def "getAllByDriver(Long driverId) driver exists in the DB"() {

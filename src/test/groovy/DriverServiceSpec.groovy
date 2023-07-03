@@ -9,14 +9,15 @@ class DriverServiceSpec extends Specification {
 
     def "create(Driver driver) test"() {
         given:
-        Driver driver = Mock()
+        Driver expected = new Driver(id: 1, name: "Nick")
 
         when:
-        driverService.create(driver)
+        Driver actual = driverService.create(expected)
 
         then:
-        1 * driverDao.create(driver)
+        1 * driverDao.create(expected) >> expected
         0 * _
+        actual == expected
     }
 
     def "get(Long id) when driver by id present in the DB"() {
@@ -51,14 +52,17 @@ class DriverServiceSpec extends Specification {
 
     def "update(Driver driver) test"() {
         given:
-        Driver driver = Mock()
+        Driver expexted = new Driver(id: 2, name: "Serhii")
 
         when:
-        driverService.update(driver)
+        expexted.setName("Serj")
+        Driver actual = driverService.update(expexted)
 
         then:
-        1 * driverDao.update(driver)
+        1 * driverDao.update(expexted) >> expexted
         0 * _
+        actual.getName() == "Serj"
+        actual.getId() == expexted.getId()
     }
 
     def "call delete method in DriverService"() {

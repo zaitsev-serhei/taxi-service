@@ -9,14 +9,15 @@ class ManufacturerServiceSpec extends Specification {
 
     def "create(Manufacturer manufacturer) test"() {
         given:
-        Manufacturer manufacturer = Mock()
+        Manufacturer expected = new Manufacturer(id: 1, name: "BMV")
 
         when:
-        manufacturerService.create(manufacturer)
+        Manufacturer actual = manufacturerService.create(expected)
 
         then:
-        1 * manufacturerDao.create(manufacturer)
+        1 * manufacturerDao.create(expected) >> expected
         0 * _
+        actual == expected
     }
 
     def "get(Long id) when manufacturer by id present in the DB"() {
@@ -51,14 +52,17 @@ class ManufacturerServiceSpec extends Specification {
 
     def "update(Manufacturer manufacturer) test"() {
         given:
-        Manufacturer manufacturer = Mock()
+        Manufacturer manufacturer = new Manufacturer(id: 1, name: "Lexus")
 
         when:
-        manufacturerService.update(manufacturer)
+        manufacturer.setName("Mersedes")
+        Manufacturer actual = manufacturerService.update(manufacturer)
 
         then:
-        1 * manufacturerDao.update(manufacturer)
+        1 * manufacturerDao.update(manufacturer) >> manufacturer
         0 * _
+        actual.getName() == "Mersedes"
+        actual.getId() == manufacturer.getId()
     }
 
     def "delete(Long id) test"() {
