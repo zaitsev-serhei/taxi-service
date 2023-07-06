@@ -84,8 +84,8 @@ class CarServiceSpec extends Specification {
         given:
         Car car = new Car();
         Driver driver = new Driver(id: 1, name: "Dave");
-        Driver drive_2 = new Driver(id: 3,name: "Den");
-        Driver drive_3 = new Driver(id: 2,name: "Denise");
+        Driver drive_2 = new Driver(id: 2,name: "Den");
+        Driver drive_3 = new Driver(id: 3,name: "Denise");
         car.getDrivers().addAll([drive_2,drive_3]);
 
         when:
@@ -94,7 +94,6 @@ class CarServiceSpec extends Specification {
         then:
         1 * carDao.update(car);
         0 * _
-        !car.getDrivers().isEmpty()
         car.getDrivers().size() == 3
         car.getDrivers().contains(driver)
     }
@@ -103,8 +102,8 @@ class CarServiceSpec extends Specification {
         given:
         Car car = new Car();
         Driver driver = new Driver(id: 1, name: "John")
-        Driver drive_2 = new Driver(id: 3, name: "Den");
-        Driver drive_3 = new Driver(id: 2, name: "Denise");
+        Driver drive_2 = new Driver(id: 2, name: "Den");
+        Driver drive_3 = new Driver(id: 3, name: "Denise");
         car.getDrivers().addAll(driver, drive_2, drive_3);
 
         when:
@@ -113,7 +112,6 @@ class CarServiceSpec extends Specification {
         then:
         1 * carDao.update(car);
         0 * _
-        !car.getDrivers().isEmpty()
         !car.getDrivers().contains(driver)
         car.getDrivers().size() == 2
 
