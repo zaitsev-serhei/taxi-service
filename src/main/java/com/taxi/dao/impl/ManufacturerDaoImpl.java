@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -47,7 +46,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    logger.error("Transaction can`t be executed in create(Manufacturer manufacturer) with {}", manufacturer);
+                    logger.error("Transaction can`t be executed in create(Manufacturer manufacturer) with {}",
+                            manufacturer);
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
@@ -121,7 +121,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    logger.error("Transaction can`t be executed in update(Manufacturer manufacturer) with {}", manufacturer);
+                    logger.error("Transaction can`t be executed in update(Manufacturer manufacturer) with {}",
+                            manufacturer);
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
