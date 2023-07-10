@@ -12,11 +12,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private DbConnectionUtil connectionUtil;
+    private Logger logger = LogManager.getLogger(ManufacturerDaoImpl.class);
 
     public ManufacturerDaoImpl(DbConnectionUtil connectionUtil) {
         this.connectionUtil = connectionUtil;
@@ -24,6 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
+        logger.info("Entered create(Manufacturer manufacturer)");
         String createStatement = "INSERT INTO manufacturers(name,country) VALUES (?,?);";
         Connection connection = connectionUtil.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
@@ -33,6 +38,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.executeUpdate();
             connection.commit();
+            logger.info("Transaction completed in create(Manufacturer manufacturer)");
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             Long recordId = resultSet.getObject(1, Long.class);
@@ -41,11 +47,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    System.out.println("Transaction in Create Manufacturer was rolled back ");
+                    logger.error("Transaction can`t be executed in create(Manufacturer manufacturer) with {}", manufacturer);
                     connection.rollback();
+                    logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    // TODO: 21.06.2023 add logs instead of printStackTrace
-                    exception.printStackTrace();
+                    logger.error("Can`t roll back transaction in create(Manufacturer manufacturer)");
                 }
             }
             throw new DataProcessingException("Can`t update Manufacturer " + manufacturer, e);
@@ -53,8 +59,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                // TODO: 21.06.2023 add logs instead of printStackTrace
-                exception.printStackTrace();
+                logger.error("Can`t close connection in create(Manufacturer manufacturer)");
             }
         }
 
@@ -62,6 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        logger.info("Entered get(Long id) in ManufacturerDaoImpl");
         Manufacturer manufacturer = new Manufacturer();
         String getStatement = "SELECT * FROM manufacturers WHERE id = ? AND isDeleted = false";
         try (Connection connection = connectionUtil.getConnection();
@@ -80,6 +86,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        logger.info("Entered getAll() in ManufacturerDaoImpl");
         List<Manufacturer> manufacturerList = new ArrayList<>();
         String getAllStatement = "SELECT * FROM manufacturers WHERE isDeleted = false ";
         try (Connection connection = connectionUtil.getConnection();
@@ -98,6 +105,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
+        logger.info("Entered update(Manufacturer manufacturer)");
         String updateStatement = "UPDATE manufacturers SET name = ?, country = ?"
                 + "WHERE id = ? AND isDeleted = false ;";
         Connection connection = connectionUtil.getConnection();
@@ -113,12 +121,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    // TODO: 21.06.2023 add logs instead of sout
-                    System.out.println("Transaction in Update Manufacturer was rolled back ");
+                    logger.error("Transaction can`t be executed in update(Manufacturer manufacturer) with {}", manufacturer);
                     connection.rollback();
+                    logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    // TODO: 21.06.2023 add logs instead of printStackTrace
-                    exception.printStackTrace();
+                    logger.error("Can`t roll back transaction in update(Manufacturer manufacturer)");
                 }
             }
             throw new DataProcessingException("Can`t update Manufacturer "
@@ -127,14 +134,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                // TODO: 21.06.2023 add logs instead of printStackTrace
-                exception.printStackTrace();
+                logger.error("Connection can`t be closed in update(Driver driver)");
             }
         }
     }
 
     @Override
     public boolean delete(Long id) {
+        logger.info("Entered delete(Long id)");
         String query = "UPDATE manufacturers SET isDeleted = true "
                 + "WHERE id = ? AND isDeleted = false;";
         try (Connection connection = connectionUtil.getConnection();

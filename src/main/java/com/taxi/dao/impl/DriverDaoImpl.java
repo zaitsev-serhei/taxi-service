@@ -12,11 +12,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class DriverDaoImpl implements DriverDao {
     private DbConnectionUtil connectionUtil;
+    private Logger logger = LogManager.getLogger(DriverDaoImpl.class);
 
     public DriverDaoImpl(DbConnectionUtil connectionUtil) {
         this.connectionUtil = connectionUtil;
@@ -24,28 +27,45 @@ public class DriverDaoImpl implements DriverDao {
 
     @Override
     public Driver create(Driver driver) {
+        logger.info("Entered create(Driver driver)");
         String createStatement = "INSERT INTO drivers(name,licence) VALUES (?,?);";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
+        Connection connection = connectionUtil.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(createStatement,
                          Statement.RETURN_GENERATED_KEYS)) {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenseNumber());
             preparedStatement.executeUpdate();
             connection.commit();
+            logger.info("Transaction completed in create(Driver driver)");
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             Long recordId = resultSet.getObject(1, Long.class);
             driver.setId(recordId);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new Driver "
-                    + driver, e);
+            return driver;
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    logger.error("Transaction can`t be executed in create(Driver driver) with {}", driver);
+                    connection.rollback();
+                    logger.info("Transaction was rolled back");
+                } catch (SQLException exception) {
+                    logger.error("Can`t roll back transaction in create(Driver driver)");
+                }
+            }
+            throw new DataProcessingException("Can`t create Driver " + driver, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException exception) {
+                logger.error("Can`t close connection in create(Driver driver)");
+            }
         }
-        return driver;
     }
 
     @Override
     public Optional<Driver> get(Long id) {
+        logger.info("Entered get(Long id) in DriverDaoImpl");
         Driver driver = new Driver();
         String getStatement = "SELECT * FROM drivers WHERE id = ? AND isDeleted = false";
         try (Connection connection = connectionUtil.getConnection();
@@ -64,6 +84,7 @@ public class DriverDaoImpl implements DriverDao {
 
     @Override
     public List<Driver> getAll() {
+        logger.info("Entered getAll() in DriverDaoImpl");
         List<Driver> driverList = new ArrayList<>();
         String getAllStatement = "SELECT * FROM drivers WHERE isDeleted = false ";
         try (Connection connection = connectionUtil.getConnection();
@@ -82,6 +103,7 @@ public class DriverDaoImpl implements DriverDao {
 
     @Override
     public Driver update(Driver driver) {
+        logger.info("Entered update(Driver driver)");
         String updateStatement = "UPDATE drivers SET name = ?, licence = ?"
                 + "WHERE id = ? AND isDeleted = false ;";
         Connection connection = connectionUtil.getConnection();
@@ -93,15 +115,16 @@ public class DriverDaoImpl implements DriverDao {
             preparedStatement.setLong(3, driver.getId());
             preparedStatement.executeUpdate();
             connection.commit();
+            logger.info("Transaction completed in update(Driver driver)");
             return driver;
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    System.out.println("Transaction in Update Driver was rolled back ");
+                    logger.error("Transaction can`t be executed in create(Car car) with {}", driver);
                     connection.rollback();
+                    logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    // TODO: 21.06.2023 add logs instead of printStackTrace
-                    exception.printStackTrace();
+                    logger.error("Transaction can`t be rolled back in update(Driver driver)");
                 }
             }
             throw new DataProcessingException("Can`t update Driver "
@@ -110,14 +133,14 @@ public class DriverDaoImpl implements DriverDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                // TODO: 21.06.2023 add logs instead of printStackTrace
-                exception.printStackTrace();
+                logger.error("Connection can`t be closed in update(Driver driver)");
             }
         }
     }
 
     @Override
     public boolean delete(Long id) {
+        logger.info("Entered delete(Long id) in DriverDaoImpl");
         String query = "UPDATE drivers SET isDeleted = true "
                 + "WHERE id = ? AND isDeleted = false;";
         try (Connection connection = connectionUtil.getConnection();

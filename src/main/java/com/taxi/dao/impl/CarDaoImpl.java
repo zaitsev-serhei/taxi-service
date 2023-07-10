@@ -16,11 +16,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class CarDaoImpl implements CarDao {
     private DbConnectionUtil connectionUtil;
+    private Logger logger = LogManager.getLogger(CarDaoImpl.class);
 
     public CarDaoImpl(DbConnectionUtil connectionUtil) {
         this.connectionUtil = connectionUtil;
@@ -28,37 +31,39 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public Car create(Car car) {
+        logger.info("Entered create(Car car");
         Connection connection = connectionUtil.getConnection();
         try {
             connection.setAutoCommit(false);
             createCar(car,connection);
             addDriversForCar(car, connection);
             connection.commit();
+            logger.info("Transaction completed in create(Car car)");
             return car;
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    // TODO: 21.06.2023 add logs instead of console output
+                    logger.error("Transaction can`t be executed in create(Car car) with {}", car);
                     connection.rollback();
+                    logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    // TODO: 21.06.2023 add logs instead of printStackTrace
-                    exception.printStackTrace();
+                    logger.error("Can`t roll back transaction in create(Car car)");
                 }
             }
-            throw new DataProcessingException("Can`t update Car "
+            throw new DataProcessingException("Can`t create Car "
                     + car, e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                // TODO: 21.06.2023 add logs instead of printStackTrace
-                exception.printStackTrace();
+                logger.error("Can`t close connection in create(Car car)");
             }
         }
     }
 
     @Override
     public Optional<Car> get(Long id) {
+        logger.info("Entered get(Long id) in CarDaoImpl");
         Car car = null;
         String getStatement = "SELECT * FROM cars c "
                 + " JOIN manufacturers m on c.manufacturer_id = m.id"
@@ -80,6 +85,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public List<Car> getAll() {
+        logger.info("Entered getAll() in CarDaoImpl");
         List<Car> carList = new ArrayList<>();
         String getAllStatement = "SELECT * FROM cars c "
                 + " JOIN manufacturers m on c.manufacturer_id = m.id"
@@ -102,6 +108,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public Car update(Car car) {
+        logger.info("Entered update(Car car)");
         Connection connection = connectionUtil.getConnection();
         try {
             connection.setAutoCommit(false);
@@ -109,15 +116,16 @@ public class CarDaoImpl implements CarDao {
             removeDriversForCar(car, connection);
             addDriversForCar(car, connection);
             connection.commit();
+            logger.info("Transaction completed in update(Car car)");
             return car;
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    // TODO: 21.06.2023 add logs instead of printStackTrace
+                    logger.error("Transaction can`t be executed in update(Car car) with {}", car);
                     connection.rollback();
+                    logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    // TODO: 21.06.2023 add logs instead of printStackTrace
-                    exception.printStackTrace();
+                    logger.error("Can`t roll back transaction in update(Car car)");
                 }
             }
             throw new DataProcessingException("Can`t update Car "
@@ -126,14 +134,14 @@ public class CarDaoImpl implements CarDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                // TODO: 21.06.2023 add logs instead of printStackTrace
-                exception.printStackTrace();
+                logger.error("Can`t close connection in update(Car car)");
             }
         }
     }
 
     @Override
     public boolean delete(Long id) {
+        logger.info("Entered delete(Long id) in CarDaoImpl");
         String query = "UPDATE cars SET isDeleted = true "
                 + "WHERE id = ?;";
         try (Connection connection = connectionUtil.getConnection();
@@ -149,6 +157,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public List<Car> getAllByDriver(Long driverId) {
+        logger.info("Entered getAllByDriver(Long driverId)");
         List<Car> carList = new ArrayList<>();
         String getAllStatement = "SELECT c.id, c.model, c.manufacturer_id, c.isDeleted,"
                 + " m.id, m.name, m.country, m.isDeleted"
