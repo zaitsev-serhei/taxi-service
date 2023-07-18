@@ -47,11 +47,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (connection != null) {
                 try {
                     logger.error("Transaction can`t be executed in create(Manufacturer manufacturer) with {}",
-                            manufacturer);
+                            manufacturer, e);
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    logger.error("Can`t roll back transaction in create(Manufacturer manufacturer)");
+                    logger.error("Can`t roll back transaction in create(Manufacturer manufacturer)", exception);
                 }
             }
             throw new DataProcessingException("Can`t update Manufacturer " + manufacturer, e);
@@ -59,7 +59,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                logger.error("Can`t close connection in create(Manufacturer manufacturer)");
+                logger.error("Can`t close connection in create(Manufacturer manufacturer)", exception);
             }
         }
 
@@ -122,11 +122,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (connection != null) {
                 try {
                     logger.error("Transaction can`t be executed in update(Manufacturer manufacturer) with {}",
-                            manufacturer);
+                            manufacturer, e);
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    logger.error("Can`t roll back transaction in update(Manufacturer manufacturer)");
+                    logger.error("Can`t roll back transaction in update(Manufacturer manufacturer)", exception);
                 }
             }
             throw new DataProcessingException("Can`t update Manufacturer "
@@ -135,7 +135,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                logger.error("Connection can`t be closed in update(Driver driver)");
+                logger.error("Connection can`t be closed in update(Driver driver)", exception);
             }
         }
     }

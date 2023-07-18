@@ -46,11 +46,11 @@ public class DriverDaoImpl implements DriverDao {
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    logger.error("Transaction can`t be executed in create(Driver driver) with {}", driver);
+                    logger.error("Transaction can`t be executed in create(Driver driver) with {}", driver, e);
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    logger.error("Can`t roll back transaction in create(Driver driver)");
+                    logger.error("Can`t roll back transaction in create(Driver driver)", exception);
                 }
             }
             throw new DataProcessingException("Can`t create Driver " + driver, e);
@@ -58,7 +58,7 @@ public class DriverDaoImpl implements DriverDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                logger.error("Can`t close connection in create(Driver driver)");
+                logger.error("Can`t close connection in create(Driver driver)", exception);
             }
         }
     }
@@ -120,11 +120,11 @@ public class DriverDaoImpl implements DriverDao {
         } catch (Exception e) {
             if (connection != null) {
                 try {
-                    logger.error("Transaction can`t be executed in create(Car car) with {}", driver);
+                    logger.error("Transaction can`t be executed in create(Car car) with {}", driver, e);
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    logger.error("Transaction can`t be rolled back in update(Driver driver)");
+                    logger.error("Transaction can`t be rolled back in update(Driver driver)", exception);
                 }
             }
             throw new DataProcessingException("Can`t update Driver "
@@ -133,7 +133,7 @@ public class DriverDaoImpl implements DriverDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                logger.error("Connection can`t be closed in update(Driver driver)");
+                logger.error("Connection can`t be closed in update(Driver driver)", exception);
             }
         }
     }

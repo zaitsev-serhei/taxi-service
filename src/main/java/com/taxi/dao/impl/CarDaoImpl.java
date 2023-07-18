@@ -35,7 +35,7 @@ public class CarDaoImpl implements CarDao {
         Connection connection = connectionUtil.getConnection();
         try {
             connection.setAutoCommit(false);
-            createCar(car,connection);
+            createCar(car, connection);
             addDriversForCar(car, connection);
             connection.commit();
             logger.info("Transaction completed in create(Car car)");
@@ -47,7 +47,7 @@ public class CarDaoImpl implements CarDao {
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    logger.error("Can`t roll back transaction in create(Car car)");
+                    logger.error("Can`t roll back transaction in create(Car car)", exception);
                 }
             }
             throw new DataProcessingException("Can`t create Car "
@@ -56,7 +56,7 @@ public class CarDaoImpl implements CarDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                logger.error("Can`t close connection in create(Car car)");
+                logger.error("Can`t close connection in create(Car car)", exception);
             }
         }
     }
@@ -125,7 +125,7 @@ public class CarDaoImpl implements CarDao {
                     connection.rollback();
                     logger.info("Transaction was rolled back");
                 } catch (SQLException exception) {
-                    logger.error("Can`t roll back transaction in update(Car car)");
+                    logger.error("Can`t roll back transaction in update(Car car)", exception);
                 }
             }
             throw new DataProcessingException("Can`t update Car "
@@ -134,7 +134,7 @@ public class CarDaoImpl implements CarDao {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                logger.error("Can`t close connection in update(Car car)");
+                logger.error("Can`t close connection in update(Car car)", exception);
             }
         }
     }
