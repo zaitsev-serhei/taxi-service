@@ -1,6 +1,6 @@
 import com.taxi.dao.DriverDao
 import com.taxi.model.Driver
-import com.taxi.services.impl.DriverServiceImpl
+import com.taxi.service.impl.DriverServiceImpl
 import spock.lang.Specification
 
 class DriverServiceSpec extends Specification {

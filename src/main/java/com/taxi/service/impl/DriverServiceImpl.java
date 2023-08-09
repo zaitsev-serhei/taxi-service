@@ -1,8 +1,8 @@
-package com.taxi.services.impl;
+package com.taxi.service.impl;
 
 import com.taxi.dao.DriverDao;
 import com.taxi.model.Driver;
-import com.taxi.services.DriverService;
+import com.taxi.service.DriverService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

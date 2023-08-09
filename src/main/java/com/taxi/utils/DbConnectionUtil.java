@@ -18,9 +18,11 @@ public class DbConnectionUtil {
 
     public Connection getConnection() {
         try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(dbUrl, userName, dbPassword);
             return connection;
-        } catch (SQLException exception) {
+        } catch (SQLException | ClassNotFoundException exception) {
             throw new DataProcessingException("Can`t connect to data base with credentials!"
                     + dbUrl + userName + dbPassword, exception);
         }

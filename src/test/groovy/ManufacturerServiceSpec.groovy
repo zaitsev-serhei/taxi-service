@@ -1,6 +1,6 @@
 import com.taxi.dao.ManufacturerDao
 import com.taxi.model.Manufacturer
-import com.taxi.services.impl.ManufacturerServiceImpl
+import com.taxi.service.impl.ManufacturerServiceImpl
 import spock.lang.Specification
 
 class ManufacturerServiceSpec extends Specification {
