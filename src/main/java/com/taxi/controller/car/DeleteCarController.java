@@ -2,12 +2,12 @@ package com.taxi.controller.car;
 
 import com.taxi.config.AppConfig;
 import com.taxi.service.CarService;
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @WebServlet("/cars/delete")

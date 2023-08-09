@@ -4,13 +4,13 @@ import com.taxi.config.AppConfig;
 import com.taxi.model.Car;
 import com.taxi.model.Driver;
 import com.taxi.service.CarService;
+import com.taxi.service.DriverService;
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import com.taxi.service.DriverService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @WebServlet("/cars/addDriver")
@@ -20,7 +20,7 @@ public class AddDriverCarController extends HttpServlet {
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
         CarService carService = context.getBean(CarService.class);
-        if(req.getParameter("id") != null){
+        if (req.getParameter("id") != null) {
             Long carId = Long.parseLong(req.getParameter("id"));
             req.setAttribute("car", carService.get(carId));
         }

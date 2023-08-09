@@ -3,15 +3,14 @@ package com.taxi.controller.driver;
 import com.taxi.config.AppConfig;
 import com.taxi.model.Driver;
 import com.taxi.service.DriverService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
+import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @WebServlet("/drivers/getAll")
 public class GetAllDriversController extends HttpServlet {
