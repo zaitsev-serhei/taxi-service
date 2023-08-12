@@ -92,7 +92,7 @@
     <H1>Drivers</H1>
 
     <div class="topnav">
-        <a href="${pageContext.request.contextPath}/manufacturers/getAll">View all</a>
+        <a href="${pageContext.request.contextPath}/manufacturers">View all</a>
         <a class="active" href="${pageContext.request.contextPath}/manufacturers/add">Add new</a>
     </div>
         <div>

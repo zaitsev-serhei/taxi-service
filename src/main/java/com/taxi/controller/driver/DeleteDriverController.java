@@ -19,6 +19,6 @@ public class DeleteDriverController extends HttpServlet {
         DriverService driverService = context.getBean(DriverService.class);
         Long driverId = Long.parseLong(req.getParameter("id"));
         driverService.delete(driverId);
-        req.getRequestDispatcher(req.getContextPath() + "/drivers/getAll").forward(req, resp);
+        req.getRequestDispatcher(req.getContextPath() + "/drivers").forward(req, resp);
     }
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@WebServlet("/drivers/getAll")
+@WebServlet("/drivers")
 public class GetAllDriversController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,6 +21,6 @@ public class GetAllDriversController extends HttpServlet {
         DriverService driverService = context.getBean(DriverService.class);
         List<Driver> driversList = driverService.getAll();
         req.setAttribute("drivers", driversList);
-        req.getRequestDispatcher("/WEB-INF/views/driver/driverManager.jsp").forward(req, resp);
+        req.getRequestDispatcher(req.getContextPath() + "/drivers").forward(req, resp);
     }
 }

@@ -91,7 +91,7 @@
     </div>
     <H1>Cars</H1>
     <div class="topnav">
-        <a href="${pageContext.request.contextPath}/cars/getAll">View all</a>
+        <a href="${pageContext.request.contextPath}/cars">View all</a>
         <a class="active" href="${pageContext.request.contextPath}/cars/add">Add new</a>
         <!-- <a href="${pageContext.request.contextPath}/cars/addDriver">Add Driver to Car</a> -->
     </div>

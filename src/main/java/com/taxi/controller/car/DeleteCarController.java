@@ -19,6 +19,6 @@ public class DeleteCarController extends HttpServlet {
         CarService carService = context.getBean(CarService.class);
         Long carId = Long.parseLong(req.getParameter("id"));
         carService.delete(carId);
-        req.getRequestDispatcher(req.getContextPath() + "/cars/getAll").forward(req, resp);
+        req.getRequestDispatcher(req.getContextPath() + "/cars").forward(req, resp);
     }
 }

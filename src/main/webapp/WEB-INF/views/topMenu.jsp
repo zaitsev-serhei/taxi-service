@@ -52,7 +52,7 @@
 </head>
 <body>
 <div class="topnav">
-    <a class="active" href="${pageContext.request.contextPath}/drivers/getAll">View all</a>
+    <a class="active" href="${pageContext.request.contextPath}/drivers">View all</a>
     <a href="${pageContext.request.contextPath}/drivers/add">Add new</a>
 </div>
 

@@ -19,6 +19,6 @@ public class DeleteManufacturerController extends HttpServlet {
         ManufacturerService manufacturerService = context.getBean(ManufacturerService.class);
         Long driverId = Long.parseLong(req.getParameter("id"));
         manufacturerService.delete(driverId);
-        req.getRequestDispatcher(req.getContextPath() + "/manufacturers/getAll").forward(req, resp);
+        req.getRequestDispatcher(req.getContextPath() + "/manufacturers").forward(req, resp);
     }
 }

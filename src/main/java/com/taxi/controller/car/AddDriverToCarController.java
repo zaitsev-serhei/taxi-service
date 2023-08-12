@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@WebServlet("/cars/addDriver")
-public class AddDriverCarController extends HttpServlet {
+@WebServlet("/cars/drivers/add")
+public class AddDriverToCarController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AnnotationConfigApplicationContext context =
@@ -41,6 +41,6 @@ public class AddDriverCarController extends HttpServlet {
         Long driverId = Long.parseLong(req.getParameter("option_driver"));
         Driver driver = driverService.get(driverId);
         carService.addDriverToCar(driver, car);
-        resp.sendRedirect(req.getContextPath() + "/cars/getAll");
+        resp.sendRedirect(req.getContextPath() + "/cars");
     }
 }

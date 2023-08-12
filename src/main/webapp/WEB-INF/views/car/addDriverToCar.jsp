@@ -85,12 +85,12 @@
     </div>
     <H1>Add Driver To Car</H1>
     <div class="topnav">
-        <a href="${pageContext.request.contextPath}/cars/getAll">View all</a>
+        <a href="${pageContext.request.contextPath}/cars">View all</a>
         <a href="${pageContext.request.contextPath}/cars/add">Add new</a>
-        <a class="active" href="${pageContext.request.contextPath}/cars/addDriver">Add Driver to Car</a>
+        <a class="active" href="${pageContext.request.contextPath}/cars/drivers/add">Add Driver to Car</a>
     </div>
     <div>
-        <form method="post" action="${pageContext.request.contextPath}/cars/addDriver">
+        <form method="post" action="${pageContext.request.contextPath}/cars/drivers/add">
             <table border="2" style="width: 100%">
                 <tr>
                     <th>Car</th>

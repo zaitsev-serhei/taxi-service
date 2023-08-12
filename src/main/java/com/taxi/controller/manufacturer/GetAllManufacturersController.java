@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@WebServlet("/manufacturers/getAll")
+@WebServlet("/manufacturers")
 public class GetAllManufacturersController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,6 +21,6 @@ public class GetAllManufacturersController extends HttpServlet {
         ManufacturerService manufacturerService = context.getBean(ManufacturerService.class);
         List<Manufacturer> manufacturers = manufacturerService.getAll();
         req.setAttribute("manufacturers", manufacturers);
-        req.getRequestDispatcher("/WEB-INF/views/manufacturer/manufacturerManager.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/manufacturer/getAllManufacturers.jsp").forward(req, resp);
     }
 }

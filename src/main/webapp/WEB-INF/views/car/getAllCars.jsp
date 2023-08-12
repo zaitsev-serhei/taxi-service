@@ -108,7 +108,7 @@
     </div>
     <H1>Cars</H1>
     <div class="topnav">
-        <a class="active" href="${pageContext.request.contextPath}/cars/getAll">View all</a>
+        <a class="active" href="${pageContext.request.contextPath}/cars">View all</a>
         <a href="${pageContext.request.contextPath}/cars/add">Add new</a>
         <!--  <a href="${pageContext.request.contextPath}/cars/addDriver">Add Driver to Car</a> -->
     </div>
@@ -141,7 +141,7 @@
                                         <h2 class="text"><c:out value="${driver.licenseNumber}"/></h2>
                                     </th>
                                     <th>
-                                        <a href="${pageContext.request.contextPath}/cars/removeDriver?carId=${car.id}&driverId=${driver.id}"
+                                        <a href="${pageContext.request.contextPath}/cars/drivers/delete?carId=${car.id}&driverId=${driver.id}"
                                             class="button">Remove</a>
                                     </th>
                                 </tr>
@@ -152,7 +152,7 @@
                         <div>
                             <a href="${pageContext.request.contextPath}/cars/delete?id=${car.id}"
                                class="button">Delete</a>
-                            <a href="${pageContext.request.contextPath}/cars/addDriver?id=${car.id}"
+                            <a href="${pageContext.request.contextPath}/cars/drivers/add?id=${car.id}"
                                class="button">Add Driver</a>
                         </div>
                     </th>
