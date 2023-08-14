@@ -13,15 +13,20 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/manufacturers/add")
 public class AddManufacturerController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final ManufacturerService manufacturerService;
+
+    public AddManufacturerController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.manufacturerService = context.getBean(ManufacturerService.class);
+    }
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/manufacturer/addManufacturer.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        ManufacturerService manufacturerService = context.getBean(ManufacturerService.class);
         String name = req.getParameter("name");
         String country = req.getParameter("country");
         manufacturerService.create(new Manufacturer(name,country));

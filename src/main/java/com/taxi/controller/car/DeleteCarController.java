@@ -12,11 +12,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/cars/delete")
 public class DeleteCarController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final CarService carService;
+
+    public DeleteCarController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.carService = context.getBean(CarService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        CarService carService = context.getBean(CarService.class);
         Long carId = Long.parseLong(req.getParameter("id"));
         carService.delete(carId);
         req.getRequestDispatcher(req.getContextPath() + "/cars").forward(req, resp);

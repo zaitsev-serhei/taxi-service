@@ -12,11 +12,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/manufacturers/delete")
 public class DeleteManufacturerController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final ManufacturerService manufacturerService;
+
+    public DeleteManufacturerController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.manufacturerService = context.getBean(ManufacturerService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        ManufacturerService manufacturerService = context.getBean(ManufacturerService.class);
         Long driverId = Long.parseLong(req.getParameter("id"));
         manufacturerService.delete(driverId);
         req.getRequestDispatcher(req.getContextPath() + "/manufacturers").forward(req, resp);

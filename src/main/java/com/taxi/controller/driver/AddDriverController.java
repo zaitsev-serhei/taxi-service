@@ -13,6 +13,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/drivers/add")
 public class AddDriverController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final DriverService driverService;
+
+    public AddDriverController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.driverService = context.getBean(DriverService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/driver/addDriver.jsp").forward(req, resp);
@@ -20,9 +28,6 @@ public class AddDriverController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        DriverService driverService = context.getBean(DriverService.class);
         String name = req.getParameter("name");
         String licenseNumber = req.getParameter("licenseNumber");
         driverService.create(new Driver(name,licenseNumber));

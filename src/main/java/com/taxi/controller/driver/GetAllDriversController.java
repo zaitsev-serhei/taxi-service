@@ -14,11 +14,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/drivers")
 public class GetAllDriversController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final DriverService driverService;
+
+    public GetAllDriversController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.driverService = context.getBean(DriverService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        DriverService driverService = context.getBean(DriverService.class);
         List<Driver> driversList = driverService.getAll();
         req.setAttribute("drivers", driversList);
         req.getRequestDispatcher("/WEB-INF/views/driver/getAllDrivers.jsp").forward(req, resp);

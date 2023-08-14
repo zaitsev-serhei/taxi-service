@@ -15,21 +15,24 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/cars/add")
 public class AddCarController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final ManufacturerService manufacturerService;
+    private final CarService carService;
+
+    public AddCarController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.carService = context.getBean(CarService.class);
+        this.manufacturerService = context.getBean(ManufacturerService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        ManufacturerService manufacturerService = context.getBean(ManufacturerService.class);
         req.setAttribute("manufacturerList", manufacturerService.getAll());
         req.getRequestDispatcher("/WEB-INF/views/car/addCar.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        CarService carService = context.getBean(CarService.class);
-        ManufacturerService manufacturerService = context.getBean(ManufacturerService.class);
         String model = req.getParameter("model");
         Long manufacturerId = Long.parseLong(req.getParameter("option_manufacturer"));
         Manufacturer manufacturer = manufacturerService.get(manufacturerId);

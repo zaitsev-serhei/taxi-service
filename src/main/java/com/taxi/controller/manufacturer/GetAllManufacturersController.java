@@ -14,11 +14,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/manufacturers")
 public class GetAllManufacturersController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final ManufacturerService manufacturerService;
+
+    public GetAllManufacturersController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.manufacturerService = context.getBean(ManufacturerService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        ManufacturerService manufacturerService = context.getBean(ManufacturerService.class);
         List<Manufacturer> manufacturers = manufacturerService.getAll();
         req.setAttribute("manufacturers", manufacturers);
         req.getRequestDispatcher("/WEB-INF/views/manufacturer/getAllManufacturers.jsp").forward(req, resp);

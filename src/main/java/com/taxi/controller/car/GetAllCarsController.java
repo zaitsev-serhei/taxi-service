@@ -14,11 +14,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/cars")
 public class GetAllCarsController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final CarService carService;
+
+    public GetAllCarsController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.carService = context.getBean(CarService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        CarService carService = context.getBean(CarService.class);
         List<Car> carList = carService.getAll();
         req.setAttribute("cars", carList);
         req.getRequestDispatcher("/WEB-INF/views/car/getAllCars.jsp").forward(req, resp);

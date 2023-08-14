@@ -12,11 +12,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/drivers/delete")
 public class DeleteDriverController extends HttpServlet {
+    private final AnnotationConfigApplicationContext context;
+    private final DriverService driverService;
+
+    public DeleteDriverController() {
+        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        this.driverService = context.getBean(DriverService.class);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-        DriverService driverService = context.getBean(DriverService.class);
         Long driverId = Long.parseLong(req.getParameter("id"));
         driverService.delete(driverId);
         req.getRequestDispatcher(req.getContextPath() + "/drivers").forward(req, resp);
