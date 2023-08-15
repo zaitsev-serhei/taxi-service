@@ -12,12 +12,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/cars/delete")
 public class DeleteCarController extends HttpServlet {
-    private final AnnotationConfigApplicationContext context;
     private final CarService carService;
 
     public DeleteCarController() {
-        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
-        this.carService = context.getBean(CarService.class);
+        this.carService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(CarService.class);
     }
 
     @Override

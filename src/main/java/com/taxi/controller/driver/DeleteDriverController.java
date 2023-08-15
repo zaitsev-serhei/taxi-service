@@ -12,12 +12,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/drivers/delete")
 public class DeleteDriverController extends HttpServlet {
-    private final AnnotationConfigApplicationContext context;
     private final DriverService driverService;
 
     public DeleteDriverController() {
-        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
-        this.driverService = context.getBean(DriverService.class);
+        this.driverService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(DriverService.class);
     }
 
     @Override

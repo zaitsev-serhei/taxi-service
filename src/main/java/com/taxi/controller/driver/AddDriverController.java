@@ -13,12 +13,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/drivers/add")
 public class AddDriverController extends HttpServlet {
-    private final AnnotationConfigApplicationContext context;
     private final DriverService driverService;
 
     public AddDriverController() {
-        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
-        this.driverService = context.getBean(DriverService.class);
+        this.driverService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(DriverService.class);
     }
 
     @Override

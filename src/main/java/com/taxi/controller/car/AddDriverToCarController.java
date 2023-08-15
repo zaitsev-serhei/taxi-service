@@ -15,12 +15,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/cars/drivers/add")
 public class AddDriverToCarController extends HttpServlet {
-    private final AnnotationConfigApplicationContext context;
     private final CarService carService;
     private final DriverService driverService;
 
     public AddDriverToCarController() {
-        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         this.carService = context.getBean(CarService.class);
         this.driverService = context.getBean(DriverService.class);
     }

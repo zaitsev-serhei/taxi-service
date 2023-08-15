@@ -14,12 +14,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/cars")
 public class GetAllCarsController extends HttpServlet {
-    private final AnnotationConfigApplicationContext context;
     private final CarService carService;
 
     public GetAllCarsController() {
-        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
-        this.carService = context.getBean(CarService.class);
+        this.carService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(CarService.class);
     }
 
     @Override

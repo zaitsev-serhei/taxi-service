@@ -13,12 +13,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 @WebServlet("/manufacturers/add")
 public class AddManufacturerController extends HttpServlet {
-    private final AnnotationConfigApplicationContext context;
     private final ManufacturerService manufacturerService;
 
     public AddManufacturerController() {
-        this.context = new AnnotationConfigApplicationContext(AppConfig.class);
-        this.manufacturerService = context.getBean(ManufacturerService.class);
+        this.manufacturerService = new AnnotationConfigApplicationContext(AppConfig.class)
+                .getBean(ManufacturerService.class);
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
