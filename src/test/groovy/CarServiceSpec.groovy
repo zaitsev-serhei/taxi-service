@@ -2,7 +2,7 @@ import com.taxi.dao.CarDao
 import com.taxi.model.Car
 import com.taxi.model.Driver
 import com.taxi.model.Manufacturer
-import com.taxi.services.impl.CarServiceImpl
+import com.taxi.service.impl.CarServiceImpl
 import spock.lang.Specification
 
 class CarServiceSpec extends Specification {

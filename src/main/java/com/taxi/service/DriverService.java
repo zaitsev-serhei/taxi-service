@@ -1,4 +1,4 @@
-package com.taxi.services;
+package com.taxi.service;
 
 import com.taxi.model.Driver;
 import java.util.List;

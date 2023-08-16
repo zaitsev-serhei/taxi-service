@@ -4,9 +4,9 @@ import com.taxi.config.AppConfig;
 import com.taxi.model.Car;
 import com.taxi.model.Driver;
 import com.taxi.model.Manufacturer;
-import com.taxi.services.CarService;
-import com.taxi.services.DriverService;
-import com.taxi.services.ManufacturerService;
+import com.taxi.service.CarService;
+import com.taxi.service.DriverService;
+import com.taxi.service.ManufacturerService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {

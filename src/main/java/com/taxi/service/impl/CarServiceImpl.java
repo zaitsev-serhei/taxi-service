@@ -1,9 +1,9 @@
-package com.taxi.services.impl;
+package com.taxi.service.impl;
 
 import com.taxi.dao.CarDao;
 import com.taxi.model.Car;
 import com.taxi.model.Driver;
-import com.taxi.services.CarService;
+import com.taxi.service.CarService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
