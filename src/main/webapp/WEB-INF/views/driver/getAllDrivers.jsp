@@ -60,22 +60,26 @@
                 <th>ID</th>
                 <th>NAME</th>
                 <th>LICENSE NUMBER</th>
+                <th>LOGIN</th>
                 <th>ACTIONS</th>
             </tr>
-            <c:forEach var="car" items="${drivers}">
+            <c:forEach var="driver" items="${drivers}">
                 <tr>
                     <th>
-                        <h1 class="title"><c:out value="${car.id}"/></h1>
+                        <h1 class="title"><c:out value="${driver.id}"/></h1>
                     </th>
                     <th>
-                        <h1 class="title"><c:out value="${car.name}"/></h1>
+                        <h1 class="title"><c:out value="${driver.name}"/></h1>
                     </th>
                     <th>
-                        <h2 class="title"> <c:out value="${car.licenseNumber}"/></h2>
+                        <h2 class="title"> <c:out value="${driver.licenseNumber}"/></h2>
+                    </th>
+                    <th>
+                        <h2 class="title"> <c:out value="${driver.login}"/></h2>
                     </th>
                     <th>
                         <div>
-                            <a href="${pageContext.request.contextPath}/drivers/delete?id=${car.id}" class="button">Delete</a>
+                            <a href="${pageContext.request.contextPath}/drivers/delete?id=${driver.id}" class="button">Delete</a>
                         </div>
                     </th>
                 </tr>
