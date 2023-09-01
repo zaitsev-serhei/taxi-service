@@ -5,6 +5,7 @@ import com.taxi.exception.DataProcessingException;
 import com.taxi.model.Car;
 import com.taxi.model.Driver;
 import com.taxi.model.Manufacturer;
+import com.taxi.model.Role;
 import com.taxi.utils.DbConnectionUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -75,6 +76,13 @@ public class CarDaoImpl implements CarDao {
             if (resultSet.next()) {
                 car = parseCar(resultSet);
                 car.setDrivers(getDrivers(car, connection));
+                car.getDrivers().stream().forEach(driver -> {
+                    try {
+                        driver.setRoles(getDriverRoles(driver,connection));
+                    } catch (SQLException exception) {
+                        exception.printStackTrace();
+                    }
+                });
             }
             return Optional.ofNullable(car);
         } catch (SQLException e) {
@@ -97,6 +105,13 @@ public class CarDaoImpl implements CarDao {
             while (resultSet.next()) {
                 Car car = parseCar(resultSet);
                 car.setDrivers(getDrivers(car, connection));
+                car.getDrivers().stream().forEach(driver -> {
+                    try {
+                        driver.setRoles(getDriverRoles(driver,connection));
+                    } catch (SQLException exception) {
+                        exception.printStackTrace();
+                    }
+                });
                 carList.add(car);
             }
             return carList;
@@ -205,8 +220,26 @@ public class CarDaoImpl implements CarDao {
         driver.setId(resultSet.getObject("id", Long.class));
         driver.setName(resultSet.getString("name"));
         driver.setLicenseNumber(resultSet.getString("licence"));
+        driver.setLogin(resultSet.getString("login"));
+        driver.setPassword(resultSet.getString("passw"));
+        driver.setHashSeed(resultSet.getBytes("seed"));
         driver.setDeleted(resultSet.getBoolean("isDeleted"));
         return driver;
+    }
+
+    private Set<Role> getDriverRoles(Driver driver, Connection connection) throws SQLException {
+        Set<Role> roleSet = new HashSet<>();
+        String getDriverRoles = "SELECT r.role "
+                + "FROM roles r "
+                + "JOIN users_roles ur ON ur.role_id = r.id "
+                + "WHERE ur.user_id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(getDriverRoles);
+        preparedStatement.setLong(1, driver.getId());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            roleSet.add(Role.of(resultSet.getString("role")));
+        }
+        return roleSet;
     }
 
     private void createCar(Car car, Connection connection) throws SQLException {
@@ -254,7 +287,7 @@ public class CarDaoImpl implements CarDao {
 
     private Set<Driver> getDrivers(Car car, Connection connection) throws SQLException {
         Set<Driver> driverSet = new HashSet<>();
-        String getDriversString = "SELECT d.id, d.name, d.licence, d.isDeleted"
+        String getDriversString = "SELECT d.id, d.name, d.licence,d.login,d.passw,d.seed, d.isDeleted"
                 + " FROM drivers  d"
                 + " JOIN cars_drivers cd ON d.id = cd.driver_id "
                 + " WHERE car_id = ? AND isDeleted = FALSE";

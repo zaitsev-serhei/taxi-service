@@ -4,6 +4,8 @@ import com.taxi.dao.DriverDao;
 import com.taxi.model.Driver;
 import com.taxi.service.DriverService;
 import java.util.List;
+
+import com.taxi.utils.HashUtil;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +18,10 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver create(Driver driver) {
+        byte[] seed = HashUtil.getSalt();
+        String hashPassword = HashUtil.hashPassword(driver.getPassword(), seed);
+        driver.setPassword(hashPassword);
+        driver.setHashSeed(seed);
         return driverDao.create(driver);
     }
 

@@ -139,6 +139,7 @@
                                     <th>
                                         <h2 class="text"><c:out value="${driver.name}"/></h2>
                                         <h2 class="text"><c:out value="${driver.licenseNumber}"/></h2>
+                                        <h2 class="text"><c:out value="${driver.login}"/></h2>
                                     </th>
                                     <th>
                                         <a href="${pageContext.request.contextPath}/cars/drivers/delete?carId=${car.id}&driverId=${driver.id}"
